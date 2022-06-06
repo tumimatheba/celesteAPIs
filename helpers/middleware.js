@@ -1,13 +1,15 @@
 require("dotenv").config();
+const { append } = require("express/lib/response");
 const jwt = require("jsonwebtoken");
 
 const secretMerchantId = process.env.MERCHANT_ID;
-console.log(secretMerchantId);
+ console.log(secretMerchantId);
 const sectretAccessToken = process.env.ACCESS_TOKEN_SECTRET;
 
 const verify = (req, res, next) => {
   
   if (req.path === "/auth") {
+    console.log(req.path)
     verifyMerchant(req, res, next);
   } else {
     verifyToken(req, res, next);
@@ -16,6 +18,7 @@ const verify = (req, res, next) => {
 
 const verifyMerchant = (req, res, next) => {
   const { merchantId } = req.body;
+  console.log(merchantId)
   if (!merchantId) return res.sendStatus(401);
   if (merchantId === secretMerchantId) {
     next();
@@ -35,5 +38,8 @@ const verifyToken = (req, res, next) => {
     next();
   });
 };
+
+// Payment
+
 
 module.exports = { verify };

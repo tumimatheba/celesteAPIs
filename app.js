@@ -7,7 +7,7 @@ const { verify } = require("./helpers/middleware");
 
 const app = express();
 app.use(express.json());
- app.use(verify);
+ 
 let menu = [
   {
     id: 1,
@@ -104,12 +104,14 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
+app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
-const userID = process.env.USER_ID;
+
 
 app.post("/auth", async (req, res) => {
-  const { authCode } = req.body;
+   const { authCode } = req.body;
+
 
   const data = JSON.stringify({
     grantType: "AUTHORIZATION_CODE",
@@ -121,7 +123,7 @@ app.post("/auth", async (req, res) => {
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
 
   const { accessToken } = accessTokenResponse;
-  console.log(accessToken);
+ 
 
   const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
   const userData = JSON.stringify({
@@ -132,11 +134,17 @@ app.post("/auth", async (req, res) => {
 
   const userInfo = user;
   console.log(userInfo);
-  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  res.send(jsonWebToken);
+  console.log(process.env.ACCESS_TOKEN_SECTRET);
+   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+   res.send({userInfo, jsonWebToken});
+  
 });
 
 app.post("/verifyToken", (req, res) => {
+  res.send("success");
+});
+
+app.post("/pay", (req, res) => {
   res.send("success");
 });
 

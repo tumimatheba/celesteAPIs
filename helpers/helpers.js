@@ -9,7 +9,7 @@ const frontEndRequest = async (requestBody, url) => {
     "Content-Type": "application/json; charset=UTF-8",
     "client-id": clientId,
     "request-time": "2021-02-22T17:49:26.913+08:00",
-    Signature: "algorithm=RSA256, keyVersion=1, signature=testing_signatur",
+    "Signature": "algorithm=RSA256, keyVersion=1, signature=testing_signatur",
   };
 
   const config = {
