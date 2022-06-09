@@ -1,9 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const axios = require("axios").default;
+const axios = require("axios");
 const jwt = require("jsonwebtoken");
-const frontEndRequest = require("./helpers/helpers");
-const { verify } = require("./helpers/middleware");
+const {frontEndRequest, signedFrontEndRequest} = require("../helpers/helpers");
+const { verify } = require("../helpers/middleware");
 
 const app = express();
 app.use(express.json());
@@ -104,41 +104,73 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-app.use(verify);
+// app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
 
 
 app.post("/auth", async (req, res) => {
    const { authCode } = req.body;
-
+console.log(authCode);
 
   const data = JSON.stringify({
     grantType: "AUTHORIZATION_CODE",
     authCode,
   });
 
-  const tokenURL = `${baseUrl}/v2/authorizations/applyToken`;
+  const tokenURL = `${baseUrl}/v2/authorizations/applyTokenSigned`;
 
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
-
-  const { accessToken } = accessTokenResponse;
+   console.log(accessTokenResponse);
+//   const { accessToken } = accessTokenResponse;
  
+// console.log(accessToken);
+  // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  // const userData = JSON.stringify({
+  //   accessToken,
+  // });
 
-  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  const userData = JSON.stringify({
-    accessToken,
-  });
+  // const user = await frontEndRequest(userData, userUrl);
 
-  const user = await frontEndRequest(userData, userUrl);
-
-  const userInfo = user;
-  console.log(userInfo);
-  console.log(process.env.ACCESS_TOKEN_SECTRET);
-   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-   res.send({userInfo, jsonWebToken});
+  // const userInfo = user;
+  // console.log(userInfo);
+  // console.log(process.env.ACCESS_TOKEN_SECTRET);
+  //  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  //  res.send({userInfo, jsonWebToken});
+  res.send("success");
   
 });
+
+// app.post("/auth", async (req, res) => {
+//   const { authCode } = req.body;
+// console.log(authCode);
+
+//  const data = JSON.stringify({
+//    grantType: "AUTHORIZATION_CODE",
+//    authCode,
+//  });
+
+//  const tokenURL = `${baseUrl}/v2/authorizations/applyToken`;
+
+//  const accessTokenResponse = await signedFrontEndRequest(data, tokenURL);
+
+//  const { accessToken } = accessTokenResponse;
+// console.log(accessToken);
+
+// //  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+// //  const userData = JSON.stringify({
+// //    accessToken,
+// //  });
+
+// //  const user = await frontEndRequest(userData, userUrl);
+
+// //  const userInfo = user;
+// //  console.log(userInfo);
+// //  console.log(process.env.ACCESS_TOKEN_SECTRET);
+// //   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+// //   res.send({userInfo, jsonWebToken});
+// res.send("success");
+// });
 
 app.post("/verifyToken", (req, res) => {
   res.send("success");
@@ -147,6 +179,7 @@ app.post("/verifyToken", (req, res) => {
 app.post("/pay", (req, res) => {
   res.send("success");
 });
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Running on port http://localhost:${port}`));

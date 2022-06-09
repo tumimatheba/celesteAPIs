@@ -1,26 +1,53 @@
 require("dotenv").config();
 const axios = require("axios");
+const {signature, requestTime} = require("../src/signature")
 
-// const baseUrl = process.env.BASE_URL;
 const clientId = process.env.CLIENT_ID;
-console.log(clientId);
-const frontEndRequest = async (requestBody, url) => {
+
+const frontEndRequest = async (requestBody, path) => {
   const headers = {
     "Content-Type": "application/json; charset=UTF-8",
     "client-id": clientId,
-    "request-time": "2021-02-22T17:49:26.913+08:00",
-    "Signature": "algorithm=RSA256, keyVersion=1, signature=testing_signatur",
+    "request-time": requestTime,
+    "signature": `algorithm=RSA256, keyVersion=1, signature=${signature}`
   };
 
   const config = {
     method: "POST",
-    url: url,
+    url: path,
     headers,
     data: requestBody,
   };
 
-  const response = await axios(config);
-  return response.data;
+   const response =  await axios(config).catch(function (error) {
+    console.log(error);
+  });;
+
+  // return response.data;
+  return response
 };
 
-module.exports = frontEndRequest;
+// const signedFrontEndRequest = async (requestBody, url) => {
+//   const headers = {
+//     "Content-Type": "application/json; charset=UTF-8",
+//     "client-id": clientId,
+//     "request-time": requestTime,
+//     "signature": `algorithm=RSA256, keyVersion=1, signature=${signature}`,
+//   };
+// console.log(headers)
+//   const config = {
+//     method: "POST",
+//     url: url,
+//     headers,
+//     data: requestBody,
+//   };
+
+//   const response = await axios(config).catch((err)=>{
+// console.log(err);
+//   });
+//   console.log (response)
+//   return response;
+// };
+
+
+module.exports = {frontEndRequest};
