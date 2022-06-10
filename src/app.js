@@ -2,12 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
-const {frontEndRequest, signedFrontEndRequest} = require("../helpers/helpers");
+const { frontEndRequest, signedFrontEndRequest } = require("../helpers/helpers");
 const { verify } = require("../helpers/middleware");
 
 const app = express();
 app.use(express.json());
- 
+
 let menu = [
   {
     id: 1,
@@ -37,10 +37,10 @@ let menu = [
     winePairing: "clarington sauvignon blanc",
   },
 
-  
+
 ];
- const pricePerPerson = {price: 100} 
- let orders = [];
+const pricePerPerson = { price: 100 }
+let orders = [];
 
 app.post("/order", (req, res) => {
   const order = req.body;
@@ -104,16 +104,15 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-// app.use(verify);
+
 const baseUrl = process.env.BASE_URL;
 
 
-
+ //app.use(verify);
 app.post("/auth", async (req, res) => {
-   const { authCode } = req.body;
-console.log(authCode);
+  const { authCode } = req.body;
 
-  const data = JSON.stringify({
+  const data = ({
     grantType: "AUTHORIZATION_CODE",
     authCode,
   });
@@ -121,63 +120,61 @@ console.log(authCode);
   const tokenURL = `${baseUrl}/v2/authorizations/applyTokenSigned`;
 
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
-   console.log(accessTokenResponse);
-//   const { accessToken } = accessTokenResponse;
- 
-// console.log(accessToken);
-  // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  // const userData = JSON.stringify({
-  //   accessToken,
-  // });
 
-  // const user = await frontEndRequest(userData, userUrl);
+  const { accessToken } = accessTokenResponse;
 
-  // const userInfo = user;
-  // console.log(userInfo);
-  // console.log(process.env.ACCESS_TOKEN_SECTRET);
-  //  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  //  res.send({userInfo, jsonWebToken});
-  res.send("success");
-  
+  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  const userData = JSON.stringify({
+    accessToken,
+  });
+
+  const user = await frontEndRequest(userData, userUrl);
+  const userInfo = user;
+  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  res.send({ userInfo, jsonWebToken });
+
 });
-
-// app.post("/auth", async (req, res) => {
-//   const { authCode } = req.body;
-// console.log(authCode);
-
-//  const data = JSON.stringify({
-//    grantType: "AUTHORIZATION_CODE",
-//    authCode,
-//  });
-
-//  const tokenURL = `${baseUrl}/v2/authorizations/applyToken`;
-
-//  const accessTokenResponse = await signedFrontEndRequest(data, tokenURL);
-
-//  const { accessToken } = accessTokenResponse;
-// console.log(accessToken);
-
-// //  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-// //  const userData = JSON.stringify({
-// //    accessToken,
-// //  });
-
-// //  const user = await frontEndRequest(userData, userUrl);
-
-// //  const userInfo = user;
-// //  console.log(userInfo);
-// //  console.log(process.env.ACCESS_TOKEN_SECTRET);
-// //   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-// //   res.send({userInfo, jsonWebToken});
-// res.send("success");
-// });
 
 app.post("/verifyToken", (req, res) => {
   res.send("success");
 });
 
-app.post("/pay", (req, res) => {
-  res.send("success");
+app.post("/pay", async (req, res) => {
+  const paymentURL = `${baseUrl}/v2/payments/pay`;
+  const requestBody = JSON.stringify(
+  {
+    "productCode":"CASHIER_PAYMENT", // This should not change
+    "salesCode":"51051000101000000011", // This should not change
+    "paymentNotifyUrl":"http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // The endpoint on your server which we send the payment notification to
+    "paymentRequestId":"gfghghjjjhdfdghdd", // A uniquely generated ID for the payment request. This is handled on your servers
+    "paymentRedirectUrl":"http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // This is not necessary and can be left out
+    // "paymentExpiryTime":"{{paymentExpireyTime}}", // The time until the payment is valid until
+    "paymentAmount":{
+      "currency":"ZAR", // The currency code. Should always be ZAR
+      "value":"6234" // The amount in South african cents for the sale
+    },
+    "order":{
+      "goods":{ // Additional details about the items purchased
+        "referenceGoodsId":"goods123",
+        "goodsUnitAmount":{
+          "currency":"ZAR",
+          "value":"2000"
+        },
+        "goodsName":"mobile1"
+      },
+      "env":{
+        "terminalType":"MINI_APP" // The environment which the payment should use. This should not change
+      },
+      "orderDescription":"title", //The title of the payement which is displayed on the payment screens
+      "buyer":{
+        "referenceBuyerId":"216610000000446291765" // The unique id of the user on the vodapay servers. You get this from applyToken endpoint
+      }
+    }
+  });
+
+  const response = await frontEndRequest(requestBody, paymentURL);
+ 
+  res.send(response.data);
 });
 
 
