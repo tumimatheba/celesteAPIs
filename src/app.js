@@ -104,13 +104,11 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-
 const baseUrl = process.env.BASE_URL;
-
 
  //app.use(verify);
 app.post("/auth", async (req, res) => {
-  const { authCode } = req.body;
+   const { authCode } = req.body;
 
   const data = ({
     grantType: "AUTHORIZATION_CODE",
@@ -120,7 +118,7 @@ app.post("/auth", async (req, res) => {
   const tokenURL = `${baseUrl}/v2/authorizations/applyTokenSigned`;
 
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
-
+  
   const { accessToken } = accessTokenResponse;
 
   const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
@@ -132,6 +130,7 @@ app.post("/auth", async (req, res) => {
   const userInfo = user;
   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
   res.send({ userInfo, jsonWebToken });
+//res.send(authCode )
 
 });
 
@@ -175,6 +174,7 @@ app.post("/pay", async (req, res) => {
   const response = await frontEndRequest(requestBody, paymentURL);
  
   res.send(response.data);
+res.send("success")
 });
 
 
