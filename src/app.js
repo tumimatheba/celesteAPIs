@@ -106,7 +106,7 @@ app.post("/order", (req, res) => {
 
 const baseUrl = process.env.BASE_URL;
 
- //app.use(verify);
+app.use(verify);
 app.post("/auth", async (req, res) => {
    const { authCode } = req.body;
 
@@ -120,17 +120,18 @@ app.post("/auth", async (req, res) => {
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
   
   const { accessToken } = accessTokenResponse;
+  console.log(accessToken);
 
-  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  const userData = JSON.stringify({
-    accessToken,
-  });
+  // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  // const userData = JSON.stringify({
+  //   accessToken,
+  // });
 
-  const user = await frontEndRequest(userData, userUrl);
-  const userInfo = user;
-  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  res.send({ userInfo, jsonWebToken });
-//res.send(authCode )
+  // const user = await frontEndRequest(userData, userUrl);
+  // const userInfo = user;
+  // const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  // res.send({ userInfo, jsonWebToken });
+res.send(authCode )
 
 });
 
