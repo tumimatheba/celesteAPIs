@@ -103,7 +103,7 @@ app.post("/order", (req, res) => {
   orders.push(order);
   res.send("Added order to order table");
 });
- //app.use(verify);
+ app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
 
@@ -141,7 +141,7 @@ app.post("/verifyToken", (req, res) => {
 });
 
 app.post("/pay", async (req, res) => {
-  const paymentURL = `${baseUrl}/v2/payments/pay`;
+  const paymentURL = "https://vodapay-gateway.sandbox.vfs.africa/v2/payments/pay";
   const requestBody = JSON.stringify(
   {
     "productCode":"CASHIER_PAYMENT", // This should not change
