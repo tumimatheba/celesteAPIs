@@ -131,7 +131,7 @@ app.post("/auth", async (req, res) => {
   const user = await frontEndRequest(userData, userUrl);
   const userInfo = user.data;
 
-  //  const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
   console.log(userInfo);
   //  res.send({ userInfo, jsonWebToken });
    res.send( userInfo);
