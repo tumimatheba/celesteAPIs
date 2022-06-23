@@ -50,7 +50,7 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-app.get("/menu", (req, res) => {
+app.post("/menu", (req, res) => {
   res.send(menu);
 });
 
