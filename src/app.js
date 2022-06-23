@@ -141,7 +141,7 @@ app.post("/verifyToken", (req, res) => {
   res.send("success");
 });
 
-app.post("/pay", async (req, res) => {
+app.post("/payment", async (req, res) => {
   const paymentURL = "https://vodapay-gateway.sandbox.vfs.africa/v2/payments/pay";
   const requestBody = JSON.stringify(
   {
@@ -175,7 +175,7 @@ app.post("/pay", async (req, res) => {
   });
 
   const response = await frontEndRequest(requestBody, paymentURL);
- 
+ console.log(response);
   res.send(response.data);
 // res.send("success")
 });
