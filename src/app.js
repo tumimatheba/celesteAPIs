@@ -148,7 +148,7 @@ app.post("/pay", async (req, res) => {
     "productCode":"CASHIER_PAYMENT", // This should not change
     "salesCode":"51051000101000000011", // This should not change
     "paymentNotifyUrl":"http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // The endpoint on your server which we send the payment notification to
-    "paymentRequestId":"gfghghjjjhdfdghdd", // A uniquely generated ID for the payment request. This is handled on your servers
+    "paymentRequestId":"gfghghjjjhdfdghddghfd", // A uniquely generated ID for the payment request. This is handled on your servers
     "paymentRedirectUrl":"http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // This is not necessary and can be left out
     // "paymentExpiryTime":"{{paymentExpireyTime}}", // The time until the payment is valid until
     "paymentAmount":{
