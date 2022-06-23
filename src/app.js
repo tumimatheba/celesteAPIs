@@ -103,7 +103,8 @@ app.post("/order", (req, res) => {
   orders.push(order);
   res.send("Added order to order table");
 });
- app.use(verify);
+
+ //app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
 
