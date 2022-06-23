@@ -104,7 +104,7 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
- //app.use(verify);
+ app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
 
@@ -116,7 +116,7 @@ app.post("/auth", async (req, res) => {
     authCode,
   });
 
-  const tokenURL = `${baseUrl}/v2/authorizations/applyTokenSigned`;
+  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
 
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
   
