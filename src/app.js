@@ -54,7 +54,7 @@ app.get("/menu", (req, res) => {
   res.send(menu);
 });
 
-app.get("/price", (req, res) => {
+app.post("/price", (req, res) => {
   res.send(pricePerPerson);
 });
 
@@ -183,4 +183,4 @@ app.post("/paymentNotification", async (req, res) => {
   const paymentURL = `${baseUrl}/v2/payments/pay`;
 })
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Running on port http://localhost:${port}`));
+app.listen(port, () => console.log(`Running on port http://localhost:${port}...`));
