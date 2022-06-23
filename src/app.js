@@ -104,7 +104,7 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
- app.use(verify);
+//  app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
 
@@ -131,10 +131,10 @@ app.post("/auth", async (req, res) => {
   const user = await frontEndRequest(userData, userUrl);
   const userInfo = user.data;
 
-   const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  //  const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
   console.log(userInfo);
-   res.send({ userInfo, jsonWebToken });
- 
+  //  res.send({ userInfo, jsonWebToken });
+   res.send( userInfo);
 });
 
 app.post("/verifyToken", (req, res) => {
