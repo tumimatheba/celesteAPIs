@@ -132,7 +132,7 @@ app.post("/auth",  async (req, res) => {
   // const userInfo = user.data;
 
   // //const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  // console.log(userInfo);
+   console.log(accessToken);
   //  res.send({ userInfo, jsonWebToken });
    res.send( accessToken);
 });
