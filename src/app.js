@@ -194,7 +194,7 @@ app.post("/payment", async (req, res) => {
 
   const response = await frontEndRequest(requestBody, paymentURL);
   console.log(response);
-  res.send(response.data);
+  res.send(userId);
   // res.send("success")
 });
 
