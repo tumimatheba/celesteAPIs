@@ -118,9 +118,9 @@ app.post("/auth",  async (req, res) => {
 
    const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyToken';
 
-   //const accessTokenResponse = await frontEndRequest(data, tokenURL);
+   const accessTokenResponse = await frontEndRequest(data, tokenURL);
   
-  // const {accessToken} = accessTokenResponse.data;
+   const {accessToken} = accessTokenResponse.data;
   
 
   // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
@@ -134,7 +134,7 @@ app.post("/auth",  async (req, res) => {
   // //const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
   // console.log(userInfo);
   //  res.send({ userInfo, jsonWebToken });
-   res.send( authCode);
+   res.send( accessToken);
 });
 
 app.post("/verifyToken", (req, res) => {
