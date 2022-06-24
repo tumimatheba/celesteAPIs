@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev":"nodemon src/app.js"
+    "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "luxon": "^2.4.0",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "uuid": "^8.3.2"
   }
 }
