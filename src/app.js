@@ -120,7 +120,7 @@ app.post("/auth",  async (req, res) => {
 
    const accessTokenResponse = await frontEndRequest(data, tokenURL);
   
-   const {accessToken} = accessTokenResponse.data;
+   //const {accessToken} = accessTokenResponse.data;
   
 
   // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
@@ -134,7 +134,7 @@ app.post("/auth",  async (req, res) => {
   // //const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
    console.log(accessToken);
   //  res.send({ userInfo, jsonWebToken });
-   res.send( accessToken);
+   res.send( accessTokenResponse);
 });
 
 app.post("/verifyToken", (req, res) => {
