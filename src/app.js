@@ -70,14 +70,10 @@ app.post("/menu", (req, res) => {
 //   return response;
 // };
 
-// app.post("/price",async (req, res) => {
-//  const data = {pricePerPerson}
-//  const testURL = "http://localhost:3000/menu"
-// const result = await testfunction(data, testURL);
-// console.log(result.data);
+app.post("/price",async (req, res) => {
 
-//   res.send("success");
-// });
+  res.send(pricePerPerson);
+});
 
 app.get("/menu/:id", (req, res) => {
   const id = req.params.id;
