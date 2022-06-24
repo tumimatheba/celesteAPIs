@@ -121,43 +121,8 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-app.use(verify);
+
 const baseUrl = process.env.BASE_URL;
-
-
-app.post("/auth", async (req, res) => {
-  const { authCode } = req.body;
-
-  const data = ({
-    grantType: "AUTHORIZATION_CODE",
-    authCode,
-  });
-
-  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyToken';
-
-  const accessTokenResponse = await frontEndRequest(data, tokenURL);
-
-  const { accessToken } = accessTokenResponse.data;
-
-
-  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  const userData = JSON.stringify({
-    accessToken,
-  });
-
-  const user = await frontEndRequest(userData, userUrl);
-  const userInfo = user.data;
-
-  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  console.log(accessToken);
-  res.send({ userInfo, jsonWebToken });
-
-});
-
-app.post("/verifyToken", (req, res) => {
-  res.send("success");
-});
-
 app.post("/payment", async (req, res) => {
   const {userId} = req.body
   const paymentURL = "https://vodapay-gateway.sandbox.vfs.africa/v2/payments/pay";
@@ -201,5 +166,40 @@ app.post("/payment", async (req, res) => {
 app.post("/paymentNotification", async (req, res) => {
   const paymentURL = `${baseUrl}/v2/payments/pay`;
 })
+app.use(verify);
+app.post("/auth", async (req, res) => {
+  const { authCode } = req.body;
+
+  const data = ({
+    grantType: "AUTHORIZATION_CODE",
+    authCode,
+  });
+
+  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyToken';
+
+  const accessTokenResponse = await frontEndRequest(data, tokenURL);
+
+  const { accessToken } = accessTokenResponse.data;
+
+
+  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  const userData = JSON.stringify({
+    accessToken,
+  });
+
+  const user = await frontEndRequest(userData, userUrl);
+  const userInfo = user.data;
+
+  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  console.log(accessToken);
+  res.send({ userInfo, jsonWebToken });
+
+});
+
+app.post("/verifyToken", (req, res) => {
+  res.send("success");
+});
+
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Running on port http://localhost:${port}...`));
