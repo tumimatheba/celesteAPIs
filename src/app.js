@@ -187,7 +187,7 @@ app.post("/payment", async (req, res) => {
         },
         "orderDescription": "title", //The title of the payement which is displayed on the payment screens
         "buyer": {
-          "referenceBuyerId":  "216610000000446291765"  // The unique id of the user on the vodapay servers. You get this from applyToken endpoint
+          "referenceBuyerId":  userId  // The unique id of the user on the vodapay servers. You get this from applyToken endpoint
         }
       }
     });
