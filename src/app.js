@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require('uuid');
 const { frontEndRequest, signedFrontEndRequest } = require("../helpers/helpers");
 const { verify } = require("../helpers/middleware");
 
@@ -50,13 +51,33 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-app.post("/menu", async (req, res) => {
+app.post("/menu", (req, res) => {
   res.send(menu);
 });
 
-app.post("/price", (req, res) => {
-  res.send(pricePerPerson);
-});
+
+// const testfunction = async (requestBody, path) => {
+
+
+//   const options = {
+//     method: "POST",
+//     data: requestBody,
+//     url: path,
+//   };
+
+//   const response = await axios(options)
+
+//   return response;
+// };
+
+// app.post("/price",async (req, res) => {
+//  const data = {pricePerPerson}
+//  const testURL = "http://localhost:3000/menu"
+// const result = await testfunction(data, testURL);
+// console.log(result.data);
+
+//   res.send("success");
+// });
 
 app.get("/menu/:id", (req, res) => {
   const id = req.params.id;
@@ -104,37 +125,37 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-  //app.use(verify);
+//app.use(verify);
 const baseUrl = process.env.BASE_URL;
 
 
-app.post("/auth",  async (req, res) => {
-   const { authCode } = req.body;
+app.post("/auth", async (req, res) => {
+  const { authCode } = req.body;
 
   const data = ({
     grantType: "AUTHORIZATION_CODE",
     authCode,
   });
 
-   const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyToken';
+  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyToken';
 
-   const accessTokenResponse = await frontEndRequest(data, tokenURL);
-  
-   //const {accessToken} = accessTokenResponse.data;
-  
+  const accessTokenResponse = await frontEndRequest(data, tokenURL);
 
-  // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  // const userData = JSON.stringify({
-  //   accessToken,
-  // });
+  const { accessToken } = accessTokenResponse.data;
 
-  // const user = await frontEndRequest(userData, userUrl);
-  // const userInfo = user.data;
 
-  // //const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
-   console.log(accessToken);
-  //  res.send({ userInfo, jsonWebToken });
-   res.send( accessTokenResponse);
+  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  const userData = JSON.stringify({
+    accessToken,
+  });
+
+  const user = await frontEndRequest(userData, userUrl);
+  const userInfo = user.data;
+
+  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  console.log(accessToken);
+  res.send({ userInfo, jsonWebToken });
+
 });
 
 app.post("/verifyToken", (req, res) => {
@@ -144,40 +165,40 @@ app.post("/verifyToken", (req, res) => {
 app.post("/payment", async (req, res) => {
   const paymentURL = "https://vodapay-gateway.sandbox.vfs.africa/v2/payments/pay";
   const requestBody = JSON.stringify(
-  {
-    "productCode":"CASHIER_PAYMENT", // This should not change
-    "salesCode":"51051000101000000011", // This should not change
-    "paymentNotifyUrl":"http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // The endpoint on your server which we send the payment notification to
-    "paymentRequestId":"gfghghjjjhdfdghddghfd", // A uniquely generated ID for the payment request. This is handled on your servers
-    "paymentRedirectUrl":"http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // This is not necessary and can be left out
-    // "paymentExpiryTime":"{{paymentExpireyTime}}", // The time until the payment is valid until
-    "paymentAmount":{
-      "currency":"ZAR", // The currency code. Should always be ZAR
-      "value":"6234" // The amount in South african cents for the sale
-    },
-    "order":{
-      "goods":{ // Additional details about the items purchased
-        "referenceGoodsId":"goods123",
-        "goodsUnitAmount":{
-          "currency":"ZAR",
-          "value":"2000"
+    {
+      "productCode": "CASHIER_PAYMENT", // This should not change
+      "salesCode": "51051000101000000011", // This should not change
+      "paymentNotifyUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // The endpoint on your server which we send the payment notification to
+      "paymentRequestId": uuidv4(), // A uniquely generated ID for the payment request. This is handled on your servers
+      "paymentRedirectUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // This is not necessary and can be left out
+      // "paymentExpiryTime":"{{paymentExpireyTime}}", // The time until the payment is valid until
+      "paymentAmount": {
+        "currency": "ZAR", // The currency code. Should always be ZAR
+        "value": "6234" // The amount in South african cents for the sale
+      },
+      "order": {
+        "goods": { // Additional details about the items purchased
+          "referenceGoodsId": "goods123",
+          "goodsUnitAmount": {
+            "currency": "ZAR",
+            "value": "2000"
+          },
+          "goodsName": "mobile1"
         },
-        "goodsName":"mobile1"
-      },
-      "env":{
-        "terminalType":"MINI_APP" // The environment which the payment should use. This should not change
-      },
-      "orderDescription":"title", //The title of the payement which is displayed on the payment screens
-      "buyer":{
-        "referenceBuyerId":"216610000000446291765" // The unique id of the user on the vodapay servers. You get this from applyToken endpoint
+        "env": {
+          "terminalType": "MINI_APP" // The environment which the payment should use. This should not change
+        },
+        "orderDescription": "title", //The title of the payement which is displayed on the payment screens
+        "buyer": {
+          "referenceBuyerId": "216610000000446291765" // The unique id of the user on the vodapay servers. You get this from applyToken endpoint
+        }
       }
-    }
-  });
+    });
 
   const response = await frontEndRequest(requestBody, paymentURL);
- console.log(response);
+  console.log(response);
   res.send(response.data);
-// res.send("success")
+  // res.send("success")
 });
 
 app.post("/paymentNotification", async (req, res) => {
