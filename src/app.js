@@ -108,7 +108,7 @@ app.post("/order", (req, res) => {
 const baseUrl = process.env.BASE_URL;
 
 
-app.post("/auth", async (req, res) => {
+app.post("/auth",  (req, res) => {
    const { authCode } = req.body;
 
   const data = ({
@@ -116,25 +116,25 @@ app.post("/auth", async (req, res) => {
     authCode,
   });
 
-  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
+  // const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
 
-  const accessTokenResponse = await frontEndRequest(data, tokenURL);
+  // const accessTokenResponse = await frontEndRequest(data, tokenURL);
   
-  const {accessToken} = accessTokenResponse.data;
+  // const {accessToken} = accessTokenResponse.data;
   
 
-  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  const userData = JSON.stringify({
-    accessToken,
-  });
+  // const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  // const userData = JSON.stringify({
+  //   accessToken,
+  // });
 
-  const user = await frontEndRequest(userData, userUrl);
-  const userInfo = user.data;
+  // const user = await frontEndRequest(userData, userUrl);
+  // const userInfo = user.data;
 
-  //const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  console.log(userInfo);
+  // //const jsonWebToken = jwt.sign( userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  // console.log(userInfo);
   //  res.send({ userInfo, jsonWebToken });
-   res.send( userInfo);
+   res.send( authCode);
 });
 
 app.post("/verifyToken", (req, res) => {
