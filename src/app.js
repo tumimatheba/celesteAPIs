@@ -166,7 +166,7 @@ app.post("/payment", async (req, res) => {
 app.post("/paymentNotification", async (req, res) => {
   const paymentURL = `${baseUrl}/v2/payments/pay`;
 })
-app.use(verify);
+//app.use(verify);
 app.post("/auth", async (req, res) => {
   const { authCode } = req.body;
 
