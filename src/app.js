@@ -135,13 +135,14 @@ app.post("/payment", async (req, res) => {
       "paymentRequestId": uuidv4(), 
       "paymentRedirectUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", 
       // "paymentExpiryTime":"{{paymentExpireyTime}}", // The time until the payment is valid until
+      "paymentExpiryTime":"2022-07-22T17:49:31+08:00",
       "paymentAmount": {
         "currency": "ZAR", 
         "value": amount // The amount in South african cents for the sale
       },
       "order": {
         "goods": { // Additional details about the items purchased
-          "referenceGoodsId": "goods124",
+          "referenceGoodsId": "goods123",
           "goodsUnitAmount": {
             "currency": "ZAR",
             "value": amount
