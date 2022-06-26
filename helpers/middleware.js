@@ -16,7 +16,7 @@ const verify = (req, res, next) => {
 
 const verifyMerchant = (req, res, next) => {
   const { merchantId } = req.body;
-
+  console.log(merchantId);
   if (!merchantId) return res.sendStatus(401);
   if (merchantId === secretMerchantId) {
     next();
