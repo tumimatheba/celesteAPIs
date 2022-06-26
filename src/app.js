@@ -175,7 +175,7 @@ app.post("/auth", async (req, res) => {
     authCode,
   });
 
-  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyToken';
+  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
 
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
 
