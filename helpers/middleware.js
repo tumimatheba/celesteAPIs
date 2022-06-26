@@ -7,7 +7,7 @@ const sectretAccessToken = process.env.ACCESS_TOKEN_SECTRET;
 const verify = (req, res, next) => {
 
   if (req.path === "/auth") {
-    console.log(req.path);
+    
     verifyMerchant(req, res, next);
   } else {
     verifyToken(req, res, next);
