@@ -195,34 +195,7 @@ app.post("/payment", async (req, res) => {
 app.post("/paymentNotification", async (req, res) => {
   const paymentURL = `${baseUrl}/v2/payments/pay`;
 })
-app.use(verify);
-app.post("/auth", async (req, res) => {
-  const { authCode } = req.body;
 
-  const data = ({
-    grantType: "AUTHORIZATION_CODE",
-    authCode,
-  });
-
-  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
-
-  const accessTokenResponse = await frontEndRequest(data, tokenURL);
-
-  const { accessToken } = accessTokenResponse.data;
-
-
-  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
-  const userData = JSON.stringify({
-    accessToken,
-  });
-
-  const user = await frontEndRequest(userData, userUrl);
-  const userInfo = user.data;
-
-  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  res.send({ userInfo, jsonWebToken });
-
-});
 
 app.post("/verifyToken", (req, res) => {
   res.send("success");
