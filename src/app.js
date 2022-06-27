@@ -121,6 +121,34 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
+app.use(verify);
+app.post("/auth", async (req, res) => {
+  const { authCode } = req.body;
+
+  const data = ({
+    grantType: "AUTHORIZATION_CODE",
+    authCode,
+  });
+
+  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
+
+  const accessTokenResponse = await frontEndRequest(data, tokenURL);
+
+  const { accessToken } = accessTokenResponse.data;
+
+
+  const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
+  const userData = JSON.stringify({
+    accessToken,
+  });
+
+  const user = await frontEndRequest(userData, userUrl);
+  const userInfo = user.data;
+
+  const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  res.send({ userInfo, jsonWebToken });
+
+});
 
 const baseUrl = process.env.BASE_URL;
 app.post("/payment", async (req, res) => {
