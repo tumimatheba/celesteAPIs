@@ -121,7 +121,7 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-app.use(verify);
+//app.use(verify);
 app.post("/auth", async (req, res) => {
   const { authCode } = req.body;
 
@@ -146,6 +146,7 @@ app.post("/auth", async (req, res) => {
   const userInfo = user.data;
 
   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
+  console.log(jsonWebToken);
   res.send({ userInfo, jsonWebToken });
 
 });
