@@ -121,7 +121,7 @@ app.post("/order", (req, res) => {
   res.send("Added order to order table");
 });
 
-//app.use(verify);
+app.use(verify);
 app.post("/auth", async (req, res) => {
   const { authCode } = req.body;
 
