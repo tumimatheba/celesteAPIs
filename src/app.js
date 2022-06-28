@@ -26,12 +26,9 @@ app.post("/auth", async (req, res) => {
     authCode,
   });
 
-  const tokenURL = 'https://vodapay-gateway.sandbox.vfs.africa/v2/authorizations/applyTokenSigned';
-
+  const tokenURL = `${baseUrl}/v2/authorizations/applyTokenSigned`;
   const accessTokenResponse = await frontEndRequest(data, tokenURL);
-
   const { accessToken } = accessTokenResponse.data;
-
 
   const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
   const userData = JSON.stringify({
@@ -42,7 +39,6 @@ app.post("/auth", async (req, res) => {
   const userInfo = user.data;
 
   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
-  console.log(jsonWebToken);
   res.send({ userInfo, jsonWebToken });
 
 });
@@ -51,7 +47,7 @@ app.post("/auth", async (req, res) => {
 app.post("/payment", async (req, res) => {
   const { userId } = req.body
   const { amount } = req.body
-  const paymentURL = "https://vodapay-gateway.sandbox.vfs.africa/v2/payments/pay";
+  const paymentURL = `${baseUrl}/v2/payments/pay`;
   const requestBody = JSON.stringify(
     {
       "productCode": "CASHIER_PAYMENT",
