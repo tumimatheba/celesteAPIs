@@ -20,7 +20,7 @@ const createSignature = ({ uriPath, clientId, requestTime, requestBody }) => {
   return signed
 }
 
-const frontEndRequest = async (requestBody, path) => {
+const vodaPayRequest = async (requestBody, path) => {
   const uriPath = new URL(path).pathname;
   const requestTime = DateTime.local().toISO();
   const signature = createSignature({ uriPath, clientId, requestTime, requestBody })
@@ -44,4 +44,4 @@ const frontEndRequest = async (requestBody, path) => {
   return response;
 };
 
-module.exports = { frontEndRequest };
+module.exports = { vodaPayRequest };

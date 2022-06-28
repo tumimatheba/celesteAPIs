@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require('uuid');
-const { frontEndRequest } = require("../helpers/helpers");
+const { vodaPayRequest } = require("../helpers/helpers");
 const { verify } = require("../helpers/middleware");
 const { pricePerPerson, menu } = require("../helpers/initialData");
 const baseUrl = process.env.BASE_URL;
@@ -10,6 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(verify);
 
+
+//use Router
 app.post("/menu", (req, res) => {
   res.send(menu);
 });
@@ -27,7 +29,7 @@ app.post("/auth", async (req, res) => {
   });
 
   const tokenURL = `${baseUrl}/v2/authorizations/applyTokenSigned`;
-  const accessTokenResponse = await frontEndRequest(data, tokenURL);
+  const accessTokenResponse = await vodaPayRequest(data, tokenURL);
   const { accessToken } = accessTokenResponse.data;
 
   const userUrl = `${baseUrl}/v2/customers/user/inquiryUserInfo`;
@@ -35,14 +37,13 @@ app.post("/auth", async (req, res) => {
     accessToken,
   });
 
-  const user = await frontEndRequest(userData, userUrl);
+  const user = await vodaPayRequest(userData, userUrl);
   const userInfo = user.data;
 
   const jsonWebToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECTRET);
   res.send({ userInfo, jsonWebToken });
 
 });
-
 
 app.post("/payment", async (req, res) => {
   const { userId } = req.body
@@ -79,7 +80,7 @@ app.post("/payment", async (req, res) => {
       }
     });
 
-  const response = await frontEndRequest(requestBody, paymentURL);
+  const response = await vodaPayRequest(requestBody, paymentURL);
   res.send(response.data);
 
 });
