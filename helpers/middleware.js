@@ -6,17 +6,16 @@ const sectretAccessToken = process.env.ACCESS_TOKEN_SECTRET;
 
 const verify = (req, res, next) => {
   console.log(req.path);
-  if (req.path === "/auth") {
-    
-    verifyMerchant(req, res, next);
-  } else {
+  if (req.path === "/payment") {
     verifyToken(req, res, next);
+    
+  } else {
+    verifyMerchant(req, res, next);
   }
 };
 
 const verifyMerchant = (req, res, next) => {
   const { merchantId } = req.body;
-  console.log(merchantId);
   if (!merchantId) return res.sendStatus(401);
   if (merchantId === secretMerchantId) {
     next();
