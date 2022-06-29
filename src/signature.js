@@ -1,7 +1,7 @@
 require("dotenv").config();
 const crypto = require('crypto')
 const fs = require('fs')
-
+const clientId = process.env.CLIENT_ID;
 const createSignature = ({ uriPath, clientId, requestTime, requestBody }) => {
   const privateKeyText = process.env.PRIVATE_KEY;
   const unsignedContent = `POST ${uriPath}\n${clientId}.${requestTime}.${JSON.stringify(
