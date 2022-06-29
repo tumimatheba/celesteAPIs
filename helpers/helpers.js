@@ -4,7 +4,7 @@ const { DateTime } = require("luxon");
 const crypto = require('crypto')
 const  { createSignature } = require("../src/signature")
 // const fs = require('fs')
- const clientId = process.env.CLIENT_ID;
+// const clientId = process.env.CLIENT_ID;
 
 // const createSignature = ({ uriPath, clientId, requestTime, requestBody }) => {
 //   const privateKeyText = fs.readFileSync('src/certs/rsa_private_key.pem', 'utf8')
