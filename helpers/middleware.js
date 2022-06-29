@@ -8,7 +8,7 @@ const verify = (req, res, next) => {
   console.log(req.path);
   if (req.path === "/payment") {
     verifyToken(req, res, next);
-
+    
   } else {
     verifyMerchant(req, res, next);
   }
@@ -25,7 +25,7 @@ const verifyMerchant = (req, res, next) => {
 };
 
 const verifyToken = (req, res, next) => {
-  const { authorization } = req.headers;
+  const {authorization } = req.headers;
   const accessToken = authorization && authorization.split(" ")[1];
   if (accessToken == null) return res.sendStatus(401);
 
@@ -37,3 +37,4 @@ const verifyToken = (req, res, next) => {
 };
 
 module.exports = { verify };
+ 

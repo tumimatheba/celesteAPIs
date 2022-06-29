@@ -10,6 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(verify);
 
+
+//use Router
 app.post("/menu", (req, res) => {
   res.send(menu);
 });
@@ -47,16 +49,14 @@ app.post("/payment", async (req, res) => {
   const { userId } = req.body
   const { amount } = req.body
   const paymentURL = `${baseUrl}/v2/payments/pay`;
-  const expiry = DateTime.now().plus({ hours: 24 })
-  const paymentExpiry = expiry.toISO('yyyy-MM-ddTHH:mm:ssZZ')
   const requestBody = JSON.stringify(
     {
       "productCode": "CASHIER_PAYMENT",
       "salesCode": "51051000101000000011",
-      "paymentNotifyUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", 
+      "paymentNotifyUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // The endpoint on your server which we send the payment notification to
       "paymentRequestId": uuidv4(),
       "paymentRedirectUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm",
-      "paymentExpiryTime": paymentExpiry,
+      "paymentExpiryTime": "2022-07-22T17:49:31+08:00",
       "paymentAmount": {
         "currency": "ZAR",
         "value": amount
@@ -68,7 +68,7 @@ app.post("/payment", async (req, res) => {
             "currency": "ZAR",
             "value": amount
           },
-          "goodsName": "food and wine"
+          "goodsName": "mobile1"
         },
         "env": {
           "terminalType": "MINI_APP"
@@ -84,6 +84,10 @@ app.post("/payment", async (req, res) => {
   res.send(response.data);
 
 });
+
+app.post("/paymentNotification", async (req, res) => {
+  const paymentURL = `${baseUrl}/v2/payments/pay`;
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Running on port http://localhost:${port}...`));
