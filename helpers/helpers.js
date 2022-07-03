@@ -7,7 +7,7 @@ const fs = require('fs')
 const clientId = process.env.CLIENT_ID;
 
 const createSignature = ({ uriPath, clientId, requestTime, requestBody }) => {
-  const privateKeyText = fs.readFileSync('src/certs/rsa_private_key.pem', 'utf8')
+  const privateKeyText = fs.readFileSync('certs/rsa_private_key.pem', 'utf8')
   const unsignedContent = `POST ${uriPath}\n${clientId}.${requestTime}.${JSON.stringify(
     requestBody
   )}`;
