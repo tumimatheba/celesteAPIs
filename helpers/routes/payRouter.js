@@ -3,8 +3,8 @@ const { v4: uuidv4 } = require('uuid');
 const router = express.Router()
 const { vodaPayRequest } = require("../vodaPayRequest");
 const baseUrl = process.env.BASE_URL;
-const app = express();
-app.use(express.json());
+// const app = express();
+// app.use(express.json());
 
 router.post("/payment", async (req, res) => {
     const { userId } = req.body

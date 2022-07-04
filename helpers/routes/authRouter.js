@@ -3,8 +3,8 @@ const router = express.Router()
 const jwt = require("jsonwebtoken");
 const { vodaPayRequest } = require("../vodaPayRequest");
 const baseUrl = process.env.BASE_URL;
-const app = express();
-app.use(express.json());
+// const app = express();
+// app.use(express.json());
 
 router.post("/auth", async (req, res) => {
     const { authCode } = req.body;
