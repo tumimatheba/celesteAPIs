@@ -1,4 +1,6 @@
-const pricePerPerson = { price: 100 }
+const express = require("express")
+const router = express.Router()
+
 const menu = [
     {
         id: 1,
@@ -28,4 +30,8 @@ const menu = [
     },
 ];
 
-module.exports = { pricePerPerson, menu };
+router.post("/menu", (req, res) => {
+    res.send(menu);
+});
+
+module.exports = router;
