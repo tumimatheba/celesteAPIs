@@ -17,9 +17,5 @@ app.use(authRouter)
 const payRouter = require('./helpers/routes/payRouter')
 app.use(payRouter)
 
-app.post("/paymentNotification", async (req, res) => {
-  const paymentURL = `${baseUrl}/v2/payments/pay`;
-})
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Running on port http://localhost:${port}...`));
