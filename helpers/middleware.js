@@ -5,7 +5,6 @@ const secretMerchantId = process.env.MERCHANT_ID;
 const sectretAccessToken = process.env.ACCESS_TOKEN_SECTRET;
 
 const verify = (req, res, next) => {
-  console.log(req.path);
   if (req.path === "/payment") {
     verifyToken(req, res, next);
   } else {
