@@ -5,16 +5,16 @@ const app = express();
 app.use(express.json());
 app.use(verify);
 
-const menuRouter = require('./helpers/routes/menuRouter')
+const menuRouter = require('./routes/menuRouter')
 app.use(menuRouter)
 
-const priceRouter = require('./helpers/routes/priceRouter')
+const priceRouter = require('./routes/priceRouter')
 app.use(priceRouter)
 
-const authRouter = require('./helpers/routes/authRouter')
+const authRouter = require('./routes/authRouter')
 app.use(authRouter)
 
-const payRouter = require('./helpers/routes/payRouter')
+const payRouter = require('./routes/payRouter')
 app.use(payRouter)
 
 const port = process.env.PORT || 3000;

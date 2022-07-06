@@ -1,7 +1,7 @@
 const express = require("express")
 const { v4: uuidv4 } = require('uuid');
 const router = express.Router()
-const { vodaPayRequest } = require("../vodaPayRequest");
+const { vodaPayRequest } = require("../helpers/vodaPayRequest");
 const baseUrl = process.env.BASE_URL;
 
 router.post("/payment", async (req, res) => {

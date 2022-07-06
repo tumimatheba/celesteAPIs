@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const jwt = require("jsonwebtoken");
-const { vodaPayRequest } = require("../vodaPayRequest");
+const { vodaPayRequest } = require("../helpers/vodaPayRequest");
 const baseUrl = process.env.BASE_URL;
 
 router.post("/auth", async (req, res) => {
