@@ -6,8 +6,6 @@ const baseUrl = process.env.BASE_URL;
 
 router.post("/payment", async (req, res) => {
     const { userId } = req.body
-    const expiry = DateTime.now().plus({ hours: 24 })
-    const paymentExpiry = expiry.toISO('yyyy-MM-ddTHH:mm:ssZZ');
     const { amount } = req.body
     const paymentURL = `${baseUrl}/v2/payments/pay`;
     const requestBody = JSON.stringify(
@@ -17,7 +15,7 @@ router.post("/payment", async (req, res) => {
             "paymentNotifyUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm", // The endpoint on your server which we send the payment notification to
             "paymentRequestId": uuidv4(),
             "paymentRedirectUrl": "http://mock.vision.vodacom.aws.corp/mock/api/v1/payments/notifyPayment.htm",
-            "paymentExpiryTime": paymentExpiry,
+            "paymentExpiryTime": "2022-07-22T17:49:31+08:00",
             "paymentAmount": {
                 "currency": "ZAR",
                 "value": amount
